@@ -17,7 +17,7 @@ import reduxBetterPromisePlugin from 'redux-breeze-plugin-better-promise';
 export const breezeInstance = createBreeze(actionsDefinitions, config, reduxBetterPromisePlugin);
 ```
 
-#### Create simple async action
+#### Create simple async or sync action
 Add action definition:
 ```javascript
 const actionsDefinitions = {
@@ -26,7 +26,11 @@ const actionsDefinitions = {
       type: 'better-promise',
       async: actionParam => Promise.resolve(actionParam)
     },
-  }
+    baz: {
+      type: 'better-promise',
+      sync: actionParam => return actionParam * 2,
+    },
+  },
 };
 ```
 
@@ -36,27 +40,35 @@ Then you will see initial state that looks like this:
   foo: {
     pending: {
       bar: false,
+      baz: false,
     },
     lastSucceeded: {
       bar: false,
+      baz: false,
     },
     lastFailed: {
       bar: false,
+      baz: false,
     },
     failed: {
       bar: false,
+      baz: false,
     },
     succeeded: {
       bar: false,
+      baz: false,
     },
     lastSucceeded: {
       bar: false,
+      baz: false,
     },
     error: {
       bar: null,
+      baz: null,
     },
     result: {
       bar: null,
+      baz: null,
     },
   },
 }
@@ -68,9 +80,15 @@ import breezeInstance from 'breezeInstance';
 
 ...
 
+handleClick = () => {
+  this.props.bar(param);
+}
+
+...
+
 connect(
   state => ({
-    pending: state.foo.pending.bar, // boolean, if true action has started by has not been resolved or rejected yet
+    pending: state.foo.pending.bar, // boolean, if true action has started but has not been resolved or rejected yet
     succeeded: state.foo.succeeded.bar, // boolean, if true action has succeeded at least once since last reload
     failed: state.foo.failed.bar, // boolean, if true action has failed at least once since last reload
     lastSucceeded: state.foo.lastSucceeded.bar, // boolean, if true action suceeded last time
@@ -224,7 +242,7 @@ Then you will see initial state that looks like this:
 {
   foo: {
     pending: {
-      bar: 'initialPending,
+      bar: 'initialPending',
     },
     lastSucceeded: {
       bar: false,
