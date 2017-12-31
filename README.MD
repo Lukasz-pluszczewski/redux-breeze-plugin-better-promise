@@ -1,8 +1,6 @@
 # redux-breeze-plugin-better-promise
 > [redux-better-promise](https://github.com/Lukasz-pluszczewski/redux-better-promise) plugin for [redux-breeze](https://github.com/Lukasz-pluszczewski/reduxBreeze)
 
-[redux-better-promise](https://github.com/Lukasz-pluszczewski/redux-better-promise) plugin for [redux-breeze](https://github.com/Lukasz-pluszczewski/reduxBreeze)
-
 ## Usage
 #### Install
 ```bash
@@ -272,7 +270,12 @@ Then you will see initial state that looks like this:
 #### Adding [custom hooks](https://github.com/Lukasz-pluszczewski/redux-better-promise#adding-hooks-to-actions) to action
 You can use custom hooks on any action just by passing `hooks` object as a second argument when dispatching the action. You don't have to change anything in action definition:
 ```javascript
-this.props.myFancyAction(someParams, { success: ({ result }) => console.log('fancy action succeeded', result) });
+this.props.myFancyAction(
+  someParams,
+  {
+    success: ({ result }) => console.log('fancy action succeeded', result)
+  }
+);
 ```
 
 ## FAQ
