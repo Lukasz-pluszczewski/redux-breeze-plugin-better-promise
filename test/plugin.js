@@ -153,7 +153,7 @@ describe('better promise plugin', () => {
       },
       custom: {
         initial: 'initialCustom',
-      }
+      },
     });
   });
 
