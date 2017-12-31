@@ -108,6 +108,55 @@ describe('better promise plugin', () => {
     });
   });
 
+  it('should set initial values based on initial field and not overwrite them with defaults', () => {
+    const actionDefinition = {
+      type: 'better-promise',
+      async: param => Promise.resolve({ foo: param }),
+      initial: {
+        'pending.success': 'initialPending',
+        'lastSucceeded.success': 'initialLastSucceeded',
+        'lastFailed.success': 'initialLastFailed',
+        'failed.success': 'initialFailed',
+        'succeeded.success': 'initialSucceeded',
+        'result.success': 'initialResult',
+        'error.success': 'initialError',
+        'custom.initial': 'initialCustom',
+      },
+    };
+
+    const plugin = createBetterPromisePlugin(tools, {});
+    const initialStateAdapter = plugin.initialStateAdapter['better-promise'];
+
+    const initialState = set({}, initialStateAdapter(actionDefinition, 'success'));
+
+    expect(initialState).to.be.deep.equal({
+      pending: {
+        success: 'initialPending',
+      },
+      lastSucceeded: {
+        success: 'initialLastSucceeded',
+      },
+      lastFailed: {
+        success: 'initialLastFailed',
+      },
+      failed: {
+        success: 'initialFailed',
+      },
+      succeeded: {
+        success: 'initialSucceeded',
+      },
+      result: {
+        success: 'initialResult',
+      },
+      error: {
+        success: 'initialError',
+      },
+      custom: {
+        initial: 'initialCustom',
+      }
+    });
+  });
+
   it('should create reducer that returns initial state', () => {
     const plugin = createBetterPromisePlugin(tools, {});
     const initialStateAdapter = plugin.initialStateAdapter['better-promise'];

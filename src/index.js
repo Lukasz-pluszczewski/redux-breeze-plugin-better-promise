@@ -113,6 +113,7 @@ const createBetterPromisePlugin = ({ createActionType }, config) => ({
       ...(actionDefinition.error
         ? getInitialStateAssignments(actionDefinition.error)
         : { [`error.${actionName}`]: null }),
+      ...(actionDefinition.initial || {}),
     }),
   },
 });
