@@ -1,6 +1,8 @@
 # redux-breeze-plugin-better-promise
 > [redux-better-promise](https://github.com/Lukasz-pluszczewski/redux-better-promise) plugin for [redux-breeze](https://github.com/Lukasz-pluszczewski/reduxBreeze)
 
+[![CircleCI](https://circleci.com/gh/Lukasz-pluszczewski/redux-breeze-plugin-better-promise.svg?style=svg)](https://circleci.com/gh/Lukasz-pluszczewski/redux-breeze-plugin-better-promise)
+
 ## Usage
 #### Install
 ```bash
