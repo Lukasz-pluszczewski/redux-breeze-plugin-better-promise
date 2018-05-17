@@ -28,7 +28,7 @@ const actionsDefinitions = {
     },
     baz: {
       type: 'better-promise',
-      sync: actionParam => return actionParam * 2,
+      sync: actionParam => actionParam * 2,
     },
   },
 };
