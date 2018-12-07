@@ -1,7 +1,6 @@
-import { expect } from 'chai';
 import { set } from 'perfect-immutable';
 import { tools } from 'redux-breeze';
-import createBetterPromisePlugin from '../src';
+import createBetterPromisePlugin from '../index';
 
 describe('better promise plugin', () => {
   const actionDefinitions = {
@@ -48,7 +47,7 @@ describe('better promise plugin', () => {
     initialState = set(initialState, initialStateAdapter(actionDefinitions.successCustom, 'successCustom'));
     initialState = set(initialState, initialStateAdapter(actionDefinitions.errorCustom, 'errorCustom'));
 
-    expect(initialState).to.be.deep.equal({
+    expect(initialState).toEqual({
       pending: {
         success: false,
         error: false,
@@ -129,7 +128,7 @@ describe('better promise plugin', () => {
 
     const initialState = set({}, initialStateAdapter(actionDefinition, 'success'));
 
-    expect(initialState).to.be.deep.equal({
+    expect(initialState).toEqual({
       pending: {
         success: 'initialPending',
       },
@@ -172,7 +171,7 @@ describe('better promise plugin', () => {
     reducerResult = reducerAdapter(actionDefinitions.successCustom, 'successCustom', initialState)(reducerResult, {});
     reducerResult = reducerAdapter(actionDefinitions.errorCustom, 'errorCustom', initialState)(reducerResult, {});
 
-    expect(reducerResult).to.be.deep.equal({
+    expect(reducerResult).toEqual({
       pending: {
         success: false,
         error: false,
@@ -241,17 +240,21 @@ describe('better promise plugin', () => {
     const actionSuccessCustom = actionAdapter(actionDefinitions.successCustom, 'successCustom')('foobar');
     const actionErrorCustom = actionAdapter(actionDefinitions.errorCustom, 'errorCustom')('foobar');
 
-    expect(actionSuccess.types).to.be.deep.equal({ start: 'SUCCESS', success: 'SUCCESS_SUCCESS', error: 'SUCCESS_ERROR' });
-    expect(await actionSuccess.promise()).to.be.deep.equal({ foo: 'foobar' });
+    expect(actionSuccess.types).toEqual({ start: 'SUCCESS', success: 'SUCCESS_SUCCESS', error: 'SUCCESS_ERROR' });
+    expect(await actionSuccess.promise()).toEqual({ foo: 'foobar' });
 
-    expect(actionError.types).to.be.deep.equal({ start: 'ERROR', success: 'ERROR_SUCCESS', error: 'ERROR_ERROR' });
-    expect(await actionError.promise().catch(error => error)).to.be.deep.equal({ bar: 'foobar' });
+    expect(actionError.types).toEqual({ start: 'ERROR', success: 'ERROR_SUCCESS', error: 'ERROR_ERROR' });
+    expect(await actionError.promise().catch(error => error)).toEqual({ bar: 'foobar' });
 
-    expect(actionSuccessCustom.types).to.be.deep.equal({ start: 'SUCCESS_CUSTOM', success: 'SUCCESS_CUSTOM_SUCCESS', error: 'SUCCESS_CUSTOM_ERROR' });
-    expect(await actionSuccessCustom.promise()).to.be.deep.equal({ foo: 'foobar' });
+    expect(actionSuccessCustom.types).toEqual(
+      { start: 'SUCCESS_CUSTOM', success: 'SUCCESS_CUSTOM_SUCCESS', error: 'SUCCESS_CUSTOM_ERROR' }
+    );
+    expect(await actionSuccessCustom.promise()).toEqual({ foo: 'foobar' });
 
-    expect(actionErrorCustom.types).to.be.deep.equal({ start: 'ERROR_CUSTOM', success: 'ERROR_CUSTOM_SUCCESS', error: 'ERROR_CUSTOM_ERROR' });
-    expect(await actionErrorCustom.promise().catch(error => error)).to.be.deep.equal({ bar: 'foobar' });
+    expect(actionErrorCustom.types).toEqual(
+      { start: 'ERROR_CUSTOM', success: 'ERROR_CUSTOM_SUCCESS', error: 'ERROR_CUSTOM_ERROR' }
+    );
+    expect(await actionErrorCustom.promise().catch(error => error)).toEqual({ bar: 'foobar' });
 
     return;
   });
@@ -272,9 +275,9 @@ describe('better promise plugin', () => {
       { start: startHook, success: successHook, error: errorHook }
     );
 
-    expect(actionHooked.types).to.be.deep.equal({ start: 'HOOKED', success: 'HOOKED_SUCCESS', error: 'HOOKED_ERROR' });
-    expect(await actionHooked.promise()).to.be.equal('foobar');
-    expect(actionHooked.hooks).to.be.deep.equal({ start: startHook, success: successHook, error: errorHook });
+    expect(actionHooked.types).toEqual({ start: 'HOOKED', success: 'HOOKED_SUCCESS', error: 'HOOKED_ERROR' });
+    expect(await actionHooked.promise()).toBe('foobar');
+    expect(actionHooked.hooks).toEqual({ start: startHook, success: successHook, error: errorHook });
 
     return;
   });
@@ -316,7 +319,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerStartResult).to.be.deep.equal({
+        expect(reducerStartResult).toEqual({
           pending: {
             success: true,
           },
@@ -379,7 +382,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerFinishResult).to.be.deep.equal({
+        expect(reducerFinishResult).toEqual({
           pending: {
             success: false,
           },
@@ -444,7 +447,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerFinishResult).to.be.deep.equal({
+        expect(reducerFinishResult).toEqual({
           pending: {
             success: false,
           },
@@ -515,7 +518,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerStartResult).to.be.deep.equal({
+        expect(reducerStartResult).toEqual({
           pending: {
             successCustom: true,
           },
@@ -588,7 +591,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerFinishResult).to.be.deep.equal({
+        expect(reducerFinishResult).toEqual({
           pending: {
             successCustom: false,
           },
@@ -661,7 +664,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerFinishResult).to.be.deep.equal({
+        expect(reducerFinishResult).toEqual({
           pending: {
             successCustom: false,
           },
@@ -735,7 +738,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerStartResult).to.be.deep.equal({
+        expect(reducerStartResult).toEqual({
           pending: {
             errorCustom: true,
           },
@@ -808,7 +811,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerFinishResult).to.be.deep.equal({
+        expect(reducerFinishResult).toEqual({
           pending: {
             errorCustom: false,
           },
@@ -885,7 +888,7 @@ describe('better promise plugin', () => {
           }
         );
 
-        expect(reducerFinishResult).to.be.deep.equal({
+        expect(reducerFinishResult).toEqual({
           pending: {
             errorCustom: false,
           },

@@ -1,30 +1,34 @@
-import _ from 'lodash';
+import isFunction from 'lodash/isFunction';
+import isPlainObject from 'lodash/isPlainObject';
+import reduce from 'lodash/reduce';
+import get from 'lodash/get';
+import has from 'lodash/has';
 import { set } from 'perfect-immutable';
 
 const getResultsAssignments = (resultDefinition, action = {}, state = {}) => {
-  const result = _.isFunction(resultDefinition) ? resultDefinition(action) : resultDefinition;
-  return _.reduce(result, (accu, source, target) => {
-    if (_.isFunction(source)) {
-      accu[target] = source(action, _.get(state, target));
-    } else if (_.isPlainObject(source)) {
-      if (_.isFunction(source.source)) {
-        accu[target] = source.source(action, _.get(state, target));
-      } else if (_.has(source, 'default') && !_.has(action, source.source)) {
+  const result = isFunction(resultDefinition) ? resultDefinition(action) : resultDefinition;
+  return reduce(result, (accu, source, target) => {
+    if (isFunction(source)) {
+      accu[target] = source(action, get(state, target));
+    } else if (isPlainObject(source)) {
+      if (isFunction(source.source)) {
+        accu[target] = source.source(action, get(state, target));
+      } else if (has(source, 'default') && !has(action, source.source)) {
         accu[target] = source.default;
       } else {
-        accu[target] = _.get(action, source.source);
+        accu[target] = get(action, source.source);
       }
     } else {
-      accu[target] = _.get(action, source);
+      accu[target] = get(action, source);
     }
     return accu;
   }, {});
 };
 
 const getInitialStateAssignments = resultDefinition => {
-  const result = _.isFunction(resultDefinition) ? resultDefinition({}) : resultDefinition;
-  return _.reduce(result, (accu, source, target) => {
-    if (_.isPlainObject(source) && _.has(source, 'initial')) {
+  const result = isFunction(resultDefinition) ? resultDefinition({}) : resultDefinition;
+  return reduce(result, (accu, source, target) => {
+    if (isPlainObject(source) && has(source, 'initial')) {
       accu[target] = source.initial;
     } else {
       accu[target] = null;
