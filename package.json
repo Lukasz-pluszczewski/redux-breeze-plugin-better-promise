@@ -86,7 +86,7 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "dependencies": {
-    "lodash": "4.17.11",
+    "lodash": "4.17.16",
     "perfect-immutable": "2.0.0"
   },
   "eslintConfig": {
